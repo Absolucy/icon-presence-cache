@@ -2,7 +2,7 @@
 
 this is just a doohickey I made to automatically pre-calculate an initial cache for `/proc/icon_exists` in SS13.
 
-it's simple enough to use, just do something like this `generate-icon-exists-cache -i "C:\Users\Lucy\Code\SS13\MonkeStation" -o output.json`
+it's simple enough to use, just do something like this `icon-presence-cache -i "C:\Users\Lucy\Code\SS13\MonkeStation" -o output.json`
 
 include `-p` or `--pretty` if you want pretty JSON rather than minified JSON
 

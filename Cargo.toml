@@ -1,10 +1,10 @@
 [package]
-name = "generate-icon-exists-cache"
+name = "icon-presence-cache"
 version = "0.1.0"
 edition = "2021"
 authors = ["Lucy <lucy@absolucy.moe>"]
 license = "Zlib"
-repository = "https://github.com/Absolucy/generate-icon-exists-cache"
+repository = "https://github.com/Absolucy/icon-presence-cache"
 
 [dependencies]
 argh = "0.1"
