@@ -10,9 +10,10 @@ repository = "https://github.com/Absolucy/generate-icon-exists-cache"
 argh = "0.1"
 color-eyre = "0.6"
 dmi = "0.3"
-walkdir = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+vc-ltl = { version = "5.2.1-Beta3", optional = true }
+walkdir = "2"
 
 [profile.release]
 lto = "thin"

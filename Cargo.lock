@@ -217,6 +217,7 @@ dependencies = [
  "dmi",
  "serde",
  "serde_json",
+ "vc-ltl",
  "walkdir",
 ]
 
@@ -536,6 +537,12 @@ name = "valuable"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ba73ea9cf16a25df0c8caa16c51acb937d5712a8429db78a3ee29d5dcacd3a65"
+
+[[package]]
+name = "vc-ltl"
+version = "5.2.1-Beta3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c1b2fbd81f9b8ce31abba2a1b21326b1207b953896dbb7a45e8077f7e7862c4e"
 
 [[package]]
 name = "walkdir"
