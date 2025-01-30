@@ -1,0 +1,38 @@
+[package]
+name = "generate-icon-exists-cache"
+version = "0.1.0"
+edition = "2021"
+authors = ["Lucy <lucy@absolucy.moe>"]
+license = "Zlib"
+repository = "https://github.com/Absolucy/generate-icon-exists-cache"
+
+[dependencies]
+argh = "0.1"
+color-eyre = "0.6"
+dmi = "0.3"
+walkdir = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+overflow-checks = false
+strip = "debuginfo"
+
+[workspace.lints.clippy]
+# presets
+complexity = "warn"
+correctness = "warn"
+perf = "warn"
+style = "warn"
+suspicious = "warn"
+# individual lints
+assigning_clones = "warn"
+create_dir = "warn"
+default_trait_access = "warn"
+inefficient_to_string = "warn"
+redundant_type_annotations = "warn"
+self_named_module_files = "warn"
+str_to_string = "warn"
+string_to_string = "warn"
