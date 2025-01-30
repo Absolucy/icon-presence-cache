@@ -21,7 +21,7 @@ jobs:
             - name: Upload Build
               uses: actions/upload-artifact@v4
               with:
-                name: Windows Build
+                name: generate-icon-exists-cache-x86_64-pc-windows-msvc.exe
                 path: target/x86_64-pc-windows-msvc/release/generate-icon-exists-cache.exe
     build-linux:
         name: Linux Build
@@ -43,6 +43,14 @@ jobs:
             - name: Upload Build
               uses: actions/upload-artifact@v4
               with:
-                name: Linux Build
+                name: generate-icon-exists-cache-x86_64-unknown-linux-musl
                 path: target/x86_64-unknown-linux-musl/release/generate-icon-exists-cache
-
+    zip-and-publish:
+        name: Create bundles and publish release
+        runs-on: ubuntu-latest
+        needs: [build-windows, build-linux]
+        steps:
+            - name: Download Previous Artifacts
+              uses: actions/download-artifact@v4
+            - name: Display structure of downloaded files
+              run: ls -R
