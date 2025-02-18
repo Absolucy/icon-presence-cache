@@ -9,24 +9,32 @@ include `-p` or `--pretty` if you want pretty JSON rather than minified JSON
 the output JSON will be in this general format:
 ```json
 {
-	"icons/a.dmi": ["foo", "bar"],
-	"icons/b.dmi": ["mrrp", "mrrrow"]
+	"revision": "fe656734fbf51a4cbe5b8697b34089afe31fbe2b",
+	"icons": {
+		"icons/a.dmi": ["foo", "bar"],
+		"icons/b.dmi": ["mrrp", "mrrrow"]
+	}
 }
 ```
 
 if you want typecache-style "associative" lists like this, you can include `-a` or `--assoc` in the command:
 ```json
 {
-	"icons/a.dmi": {
-		"foo": true,
-		"bar": true
-	},
-	"icons/b.dmi": {
-		"mrrp": true,
-		"mrrrow": true
+	"revision": "c507422900d2a5a1ada2b4a76e0a4a581c4ec63d",
+	"icons": {
+		"icons/a.dmi": {
+			"foo": true,
+			"bar": true
+		},
+		"icons/b.dmi": {
+			"mrrp": true,
+			"mrrrow": true
+		}
 	}
 }
 ```
+
+`revision` will be the git commit of `HEAD`, if the input directory is a git repository. Otherwise, it'll be null.
 
 ## License
 
