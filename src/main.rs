@@ -43,6 +43,12 @@ enum IconStates {
 	Assoc(BTreeMap<String, bool>),
 }
 
+#[derive(Serialize)]
+struct Output {
+	revision: Option<String>,
+	icons: BTreeMap<String, IconStates>,
+}
+
 impl IconStates {
 	pub fn new(dmi: Icon, assoc: bool) -> Self {
 		if assoc {
@@ -108,10 +114,20 @@ fn main() -> Result<()> {
 		);
 	}
 
+	let revision = gix::open(base_dir).ok().and_then(|repo| {
+		repo.rev_parse_single("HEAD")
+			.ok()
+			.map(|rev| rev.to_string())
+	});
+	let output = Output {
+		revision,
+		icons: all_icons,
+	};
+
 	let state_json = if args.pretty {
-		serde_json::to_string_pretty(&all_icons)
+		serde_json::to_string_pretty(&output)
 	} else {
-		serde_json::to_string(&all_icons)
+		serde_json::to_string(&output)
 	}
 	.wrap_err("failed to serialize to json")?;
 	std::fs::write(out_json, state_json)
