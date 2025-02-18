@@ -1,6 +1,6 @@
 [package]
 name = "icon-presence-cache"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["Lucy <lucy@absolucy.moe>"]
 license = "Zlib"
@@ -9,8 +9,8 @@ repository = "https://github.com/Absolucy/icon-presence-cache"
 [dependencies]
 argh = "0.1"
 color-eyre = "0.6"
-dmi = "0.3"
 gix = { version = "0.70", default-features = false, features = ["revision", "max-performance-safe"] }
+png = "0.17"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 vc-ltl = { version = "5.2.1-Beta3", optional = true }
@@ -20,7 +20,11 @@ walkdir = "2"
 lto = "thin"
 codegen-units = 1
 overflow-checks = false
-strip = "debuginfo"
+
+[profile.release-dev]
+inherits = "release"
+strip = false
+debug = "full"
 
 [workspace.lints.clippy]
 # presets

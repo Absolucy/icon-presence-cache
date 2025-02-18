@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Zlib
 use argh::FromArgs;
 use color_eyre::eyre::{ContextCompat, Result, WrapErr};
-use dmi::icon::Icon;
 use serde::Serialize;
 use std::{
 	/*
@@ -50,16 +49,11 @@ struct Output {
 }
 
 impl IconStates {
-	pub fn new(dmi: Icon, assoc: bool) -> Self {
+	pub fn new(states: Vec<String>, assoc: bool) -> Self {
 		if assoc {
-			Self::Assoc(
-				dmi.states
-					.iter()
-					.map(|state| (state.name.clone(), true))
-					.collect(),
-			)
+			Self::Assoc(states.into_iter().map(|state| (state, true)).collect())
 		} else {
-			Self::Array(dmi.states.iter().map(|state| state.name.clone()).collect())
+			Self::Array(states.into_iter().collect())
 		}
 	}
 
@@ -101,10 +95,10 @@ fn main() -> Result<()> {
 			.wrap_err("non-UTF-8 path")?
 			.replace('\\', "/");
 
-		let dmi = load_dmi(path)
-			.wrap_err_with(|| format!("failed to open dmi file at {}", path.display()))?;
+		let states = get_dmi_states(path)
+			.map(|states| IconStates::new(states, args.assoc))
+			.wrap_err_with(|| format!("failed to read dmi file at {}", path.display()))?;
 
-		let states = IconStates::new(dmi, args.assoc);
 		file_amt += 1;
 		state_amt += states.len();
 		assert!(
@@ -139,9 +133,26 @@ fn main() -> Result<()> {
 	Ok(())
 }
 
-fn load_dmi(path: &Path) -> Result<Icon> {
+fn get_dmi_states(path: &Path) -> Result<Vec<String>> {
 	let file = File::open(path)
 		.map(BufReader::new)
 		.wrap_err("failed to open file for reading")?;
-	Icon::load(file).wrap_err("failed to load dmi")
+	let decoder = png::Decoder::new(file);
+	let reader = decoder.read_info().wrap_err("failed to read png info")?;
+	let info = reader.info();
+	let mut states = Vec::<String>::new();
+	for ztxt in &info.compressed_latin1_text {
+		let text = ztxt.get_text().wrap_err("failed to read ztxt data")?;
+		text.lines()
+			.take_while(|line| !line.contains("# END DMI"))
+			.filter_map(|line| {
+				line.trim()
+					.strip_prefix("state = \"")
+					.and_then(|line| line.strip_suffix('"'))
+			})
+			.for_each(|state| {
+				states.push(state.to_owned());
+			});
+	}
+	Ok(states)
 }
